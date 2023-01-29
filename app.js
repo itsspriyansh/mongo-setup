@@ -89,3 +89,27 @@ app.delete("/books/:parameter", (req, res)=>{
 })
 
 
+app.patch("/books/:parameter", (req, res) => {
+
+    const data = req.body
+    
+    if (!ObjectId.isValid(req.params.parameter)) {
+        res.status(500).json({
+            error : "book doesn't exist"
+        })
+    }
+    
+    db.collection("books")
+    .updateOne({_id : ObjectId(req.params.parameter)}, {$set : data})
+    .then(doc => {
+        res.status(200).json({
+            message : "successfully updated",
+            doc : doc
+        })
+    })
+    .catch(error => {
+        message : "couldn't update"
+        error : error
+    })
+})
+
