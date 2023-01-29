@@ -65,3 +65,27 @@ app.post("/books", (req, res)=>{
     })
 })
 
+
+app.delete("/books/:parameter", (req, res)=>{
+    
+    if (!ObjectId.isValid(req.params.parameter)) {
+        res.status(500).json({
+            error : "book doesn't exist"
+        })
+    }
+    
+    db.collection("books")
+    .deleteOne({_id : ObjectId(req.params.parameter)})
+    .then(doc => {
+        res.status(200).json({
+            message : "successfully deleted",
+            doc : doc
+        })
+    })
+    .catch(error => {
+        message : "couldn't delete"
+        error : error
+    })
+})
+
+
