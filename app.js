@@ -18,10 +18,16 @@ connectToDb ((error) => {
 app.use(express.json())
 
 app.get("/books", (req, res) => {
+
+    const page = req.query.p - 1 || 0
+    const booksPerPage = 3
     const books = []
+
     db.collection("books")
     .find()
     .sort({title : 1})
+    .skip(page * booksPerPage)
+    .limit(booksPerPage)
     .forEach(book => books.push(book))
     .then(()=>{
         res.status(200).json(books)
@@ -48,6 +54,7 @@ app.get("/books/:parameter", (req, res)=>{
 })
 
 app.post("/books", (req, res)=>{
+
     const book = req.body
     db.collection("books")
     .insertOne(book)
