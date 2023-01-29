@@ -4,8 +4,7 @@ let dbConnection
 
 module.exports = {
     connectToDb : (cb) => {
-        const { connect } = MongoClient
-        connect("mongodb://localhost:27017/bookstore")
+        MongoClient.connect("mongodb://localhost:27017/bookstore")
         .then (client => {
             dbConnection = client.db()
             return cb()

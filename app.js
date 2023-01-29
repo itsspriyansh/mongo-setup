@@ -16,7 +16,17 @@ connectToDb ((error) => {
 
 
 app.get("/books", (req, res) => {
-    res.json ({
-        message : "welcome to the api"
+    const books = []
+    db.collection("books")
+    .find()
+    .forEach(book => books.push(book))
+    .then(()=>{
+        res.status(200).json(books)
+    })
+    .catch(error => {
+        res.status(500).json({
+            error : error
+        })
     })
 })
+
